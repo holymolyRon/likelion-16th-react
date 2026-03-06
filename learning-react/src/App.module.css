@@ -80,3 +80,17 @@
   color: white;
   text-align: center;
 }
+
+/* CSS -> [Modern Tech.] CSS Modules */
+.header,
+.main,
+.footer {
+  background-color: #000;
+  color: #fff;
+
+  & * {
+    border: 1px solid currentColor;
+    background-color: inherit;
+    color: inherit;
+  }
+}
