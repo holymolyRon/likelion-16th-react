@@ -2,7 +2,7 @@ import { Footer, Header, Image, Wrapper } from "@/components";
 // import ConditionalRendering from "@/learns/ConditionalRendering";
 
 import S from "./style.module.css";
-import ComponentState from "@/learns/ComponentState";
+import { ComponentState } from "@/learns";
 
 export default function App() {
   return (
