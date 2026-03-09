@@ -6,7 +6,7 @@ export default function App() {
   return (
     <div className={S.container}>
       <div data-placeholder />
-      <Footer slogan={["완주 이후엔", "스스로 학습이 가능!"]} />
+      <Footer slogan={"완주 이후엔 스스로 학습이 가능!"} />
 
       {/* Vite (with TypeScript) 컴파일 결과 (JSX => JavaScript)
         jsxDEV(Footer, { slogan: ["완주 이후엔", "스스로 학습이 가능!"] }, void 0, false, {

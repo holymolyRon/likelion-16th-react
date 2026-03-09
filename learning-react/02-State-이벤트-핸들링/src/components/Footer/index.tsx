@@ -1,6 +1,10 @@
 import S from "./style.module.css";
 
-export default function Footer(props) {
+interface FooterProps {
+  slogan: string;
+}
+
+export default function Footer(props: FooterProps) {
   // 부모 (상위) 컴포넌트가 자식(하위) 컴포넌트에 전달한 데이터 집합 = Props (Properties)
   // JavaScript: 함수이름(데이터) -> function 함수이름(매개변수) {}
   // React: React.createElement(컴포넌트 이름, { 키 : 값 }) -> function 컴포넌트이름(props) {}
