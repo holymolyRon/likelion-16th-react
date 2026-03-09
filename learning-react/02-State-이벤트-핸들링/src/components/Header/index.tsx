@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import S from "./style.module.css";
+import Wrapper from "../Wrapper";
 
 function Header(props: { children: ReactNode }) {
   // console.log(props.children) // VHS 비디오 테이프 / <slot></slot>
@@ -13,7 +14,11 @@ function Header(props: { children: ReactNode }) {
    * ✅ `children` prop 타입 정의 (인라인 → 인터페이스)
    */
 
-  return <header className={S.header}>{props.children}</header>;
+  return (
+    <header className={S.header}>
+      <Wrapper>{props.children}</Wrapper>
+    </header>
+  );
 }
 
 export default Header;
