@@ -1,8 +1,8 @@
 import { Footer, Header, Image, Wrapper } from "@/components";
 // import ConditionalRendering from "@/learns/ConditionalRendering";
+import { EventHandling } from "@/learns";
 
 import S from "./style.module.css";
-import { ComponentState } from "@/learns";
 
 export default function App() {
   return (
@@ -16,7 +16,8 @@ export default function App() {
 
       <div data-placeholder>
         <Wrapper>
-          <ComponentState />
+          <EventHandling />
+          {/* <ComponentState /> */}
         </Wrapper>
       </div>
 
