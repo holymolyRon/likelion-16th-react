@@ -13,13 +13,15 @@
   gap: 8px;
 }
 
-[data-placeholder] {
+.placeholder {
   max-width: var(--card-max-width, 320px);
   border: 1px solid var(--card-border-color, #e5e7ec);
   border-radius: var(--card-border-radius, 6px);
   padding: var(--card-padding, 32px 16px);
   background-color: var(--card-bg-color, #f3f3f3);
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 
   &:hover {
