@@ -1,7 +1,12 @@
-import S from './style.module.css'
+import RegisterForm from "./RegisterForm";
+import S from "./style.module.css";
 
 function ControlledComponent() {
-  return <div className={S.container}></div>
+  return (
+    <div className={S.container}>
+      <RegisterForm />
+    </div>
+  );
 }
 
-export default ControlledComponent
+export default ControlledComponent;
