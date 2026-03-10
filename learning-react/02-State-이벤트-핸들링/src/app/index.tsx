@@ -1,6 +1,6 @@
 import { Footer, Header, Image, Wrapper } from "@/components";
-import { ControlledComponent } from "@/learns";
 import S from "./style.module.css";
+import StateIsSnapshot from "@/learns/StateIsSnapshot";
 
 export default function App() {
   return (
@@ -14,7 +14,7 @@ export default function App() {
 
       <div className={S.main}>
         <Wrapper>
-          <ControlledComponent />
+          <StateIsSnapshot />
         </Wrapper>
       </div>
 
