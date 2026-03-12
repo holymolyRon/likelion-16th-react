@@ -1,10 +1,10 @@
 import S from "./style.module.css";
-import { StateInitialization } from "@/practices";
+import { Debugging } from "@/practices";
 
 export default function App() {
   return (
     <div className={S.container}>
-      <StateInitialization />
+      <Debugging />
     </div>
   );
 }
