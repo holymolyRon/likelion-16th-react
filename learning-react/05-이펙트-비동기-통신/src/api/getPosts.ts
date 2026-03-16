@@ -21,6 +21,8 @@ export const getPosts = async ({
   page = 1,
   limit = 5,
 } = {}): Promise<ResponsePostsData> => {
+  console.log(`${VITE_API_URL}/api/posts?page=${page}&limit=${limit}`);
+
   try {
     const response = await fetch(
       `${VITE_API_URL}/api/posts?page=${page}&limit=${limit}`
