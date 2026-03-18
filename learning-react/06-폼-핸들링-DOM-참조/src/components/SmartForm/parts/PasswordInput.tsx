@@ -1,49 +1,52 @@
-import { useState } from 'react'
-import S from '../SmartForm.module.css'
+import { useState } from "react";
+import S from "../SmartForm.module.css";
 
 interface PasswordInputProps {
-  id: string
-  value: string
-  onChange: (val: string) => void
-  onBlur: () => void
-  placeholder?: string
-  isError?: boolean
+  id: string;
+  describeId: string;
+  value: string;
+  onChange: (val: string) => void;
+  onBlur: () => void;
+  placeholder?: string;
+  isError?: boolean;
 }
 
 export function PasswordInput({
   id,
+  describeId,
   value,
   onChange,
   onBlur,
   placeholder,
   isError,
 }: PasswordInputProps) {
-  const [isVisible, setIsVisible] = useState(false)
-  const toggleVisibility = () => setIsVisible((prev) => !prev)
+  const [isVisible, setIsVisible] = useState(false);
+  const toggleVisibility = () => setIsVisible((prev) => !prev);
 
   return (
     <div className={S.inputContainer}>
       <input
         id={id}
-        type={isVisible ? 'text' : 'password'}
+        type={isVisible ? "text" : "password"}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         onBlur={onBlur}
         className={isError ? S.inputError : S.input}
-        placeholder={placeholder || '••••••••'}
-        aria-invalid={isError ? 'true' : 'false'}
+        placeholder={placeholder || "••••••••"}
+        aria-invalid={isError ? "true" : "false"}
+        aria-describedby={describeId}
       />
       <button
         type="button"
         className={S.visibilityButton}
         onClick={toggleVisibility}
-        aria-label={isVisible ? '비밀번호 숨기기' : '비밀번호 표시'}
+        aria-label={isVisible ? "비밀번호 숨기기" : "비밀번호 표시"}
         aria-pressed={isVisible}
       >
         {isVisible ? <EyeOffIcon /> : <EyeOnIcon />}
       </button>
     </div>
-  )
+  );
 }
 
 const EyeOffIcon = () => (
@@ -62,7 +65,7 @@ const EyeOffIcon = () => (
     <path d="M6.61 6.61A13.52 13.52 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61" />
     <line x1="2" y1="2" x2="22" y2="22" />
   </svg>
-)
+);
 
 const EyeOnIcon = () => (
   <svg
@@ -78,4 +81,4 @@ const EyeOnIcon = () => (
     <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
     <circle cx="12" cy="12" r="3" />
   </svg>
-)
+);
