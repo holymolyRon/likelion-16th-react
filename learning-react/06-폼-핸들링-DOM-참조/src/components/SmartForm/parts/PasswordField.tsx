@@ -1,32 +1,32 @@
-import { useId, useState } from "react";
-import { PasswordInput } from "./PasswordInput";
-import S from "../SmartForm.module.css";
+import { useId, useState } from 'react'
+import { PasswordInput } from './PasswordInput'
+import S from '../SmartForm.module.css'
 
 // 8자 이상, 대문자, 숫자, 특수문자(!@#$%^&*) 포함 정규식
-const PW_PATTERN = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/;
+const PW_PATTERN = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/
 
 interface Props {
-  value: string;
-  onChange: (val: string) => void;
+  value: string
+  onChange: (val: string) => void
 }
 
 export default function PasswordField({ value, onChange }: Props) {
-  const fieldId = useId();
-  const messageId = useId();
+  const fieldId = useId()
+  const messageId = useId()
 
-  const [isTouched, setIsTouched] = useState(false);
+  const [isTouched, setIsTouched] = useState(false)
 
   const getErrorMessage = () => {
-    if (!isTouched) return "";
-    if (!value) return "패스워드를 입력해주세요.";
+    if (!isTouched) return ''
+    if (!value) return '패스워드를 입력해주세요.'
 
     return PW_PATTERN.test(value)
-      ? ""
-      : "8자 이상, 대문자, 숫자, 특수문자 조합이 필요합니다.";
-  };
+      ? ''
+      : '8자 이상, 대문자, 숫자, 특수문자 조합이 필요합니다.'
+  }
 
-  const error = getErrorMessage();
-  const showError = error !== "";
+  const error = getErrorMessage()
+  const showError = error !== ''
 
   return (
     <div className={S.field}>
@@ -40,7 +40,7 @@ export default function PasswordField({ value, onChange }: Props) {
         value={value}
         onChange={onChange}
         onBlur={() => {
-          setIsTouched(true);
+          setIsTouched(true)
         }}
         isError={showError}
       />
@@ -55,5 +55,5 @@ export default function PasswordField({ value, onChange }: Props) {
         </p>
       )}
     </div>
-  );
+  )
 }

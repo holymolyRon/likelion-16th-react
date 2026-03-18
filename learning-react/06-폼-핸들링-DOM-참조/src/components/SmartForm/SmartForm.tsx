@@ -1,16 +1,16 @@
-import { useId, useState } from "react";
-import NicknameField from "./parts/NicknameField";
-import EmailField from "./parts/EmailField";
-import PasswordField from "./parts/PasswordField";
-import PasswordConfirmField from "./parts/PasswordConfirmField";
-import S from "./SmartForm.module.css";
+import { useId, useState } from 'react'
+import NicknameField from './parts/NicknameField'
+import EmailField from './parts/EmailField'
+import PasswordField from './parts/PasswordField'
+import PasswordConfirmField from './parts/PasswordConfirmField'
+import S from './SmartForm.module.css'
 
 export default function SmartForm() {
-  const sectionId = useId();
-  const [nickname, setNickname] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordConfirm, setPasswordConfirm] = useState("");
+  const sectionId = useId()
+  const [nickname, setNickname] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [passwordConfirm, setPasswordConfirm] = useState('')
 
   return (
     <article className={S.card} aria-labelledby={sectionId}>
@@ -23,20 +23,35 @@ export default function SmartForm() {
         </p>
       </header>
 
-      <form className={S.form} onSubmit={(e) => e.preventDefault()} noValidate>
-        <NicknameField value={nickname} onChange={setNickname} />
-        <EmailField value={email} onChange={setEmail} />
-        <PasswordField value={password} onChange={setPassword} />
+      <form
+        className={S.form}
+        onSubmit={(e) => e.preventDefault()}
+        noValidate
+      >
+        <NicknameField 
+          value={nickname} 
+          onChange={setNickname} 
+        />
+        <EmailField 
+          value={email} 
+          onChange={setEmail} 
+        />
+        <PasswordField 
+          value={password} 
+          onChange={setPassword} 
+        />
         <PasswordConfirmField
           value={passwordConfirm}
           basePassword={password}
           onChange={setPasswordConfirm}
         />
-
-        <button type="submit" className={S.submitButton}>
+        <button
+          type="submit"
+          className={S.submitButton}
+        >
           가입
         </button>
       </form>
     </article>
-  );
+  )
 }
