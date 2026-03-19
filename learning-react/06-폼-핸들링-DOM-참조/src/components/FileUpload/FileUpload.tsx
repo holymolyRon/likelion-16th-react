@@ -1,7 +1,7 @@
 import NickNameField from "./parts/NickNameField";
 import FileUploadField from "./parts/FileUploadField";
 import SaveButton from "./parts/SaveButton";
-// import FileUploadResult from "./parts/FileUploadResult";
+// import FileUploadResult from './parts/FileUploadResult'
 import S from "./FileUpload.module.css";
 import { useRef, useState } from "react";
 
@@ -13,10 +13,10 @@ console.log(API_ENDPOINT);
 // 실습 가이드
 // --------------------------------------------------------------------------------------
 // 1. `파일 참조(Ref)` 생성
-//    - `useRef` 훅을 사용하여 파일 인풋 요소에 접근할 참조 객체를 생성합니다.
+//    - `useRef` 훅을 사용하여 파일 인풋 요소에 접근할 참조 객체를 생성합니다. ✅
 //
 // 2. 상태(State) 생성
-//    - `previewUrl`: 선택한 이미지의 미리보기 주소 (string)
+//    - `previewUrl`: 선택한 이미지의 미리보기 주소 (string) ✅
 //    - `isUploading`: 업로드 진행 상태 (boolean)
 //    - `uploadedData`: 업로드 완료 후 서버로부터 받은 데이터 (객체 또는 null)
 //    - `isCopied`: 클립보드 복사 완료 여부 (boolean)
@@ -48,8 +48,8 @@ export default function FileUpload() {
   // [상태]
   const [previewUrl, setPreviewUrl] = useState("");
 
-  // [참조] FileUploadField 내부의 <input type="file"/> 요소를 참조하기 위한 Ref 객체 생성
-  const fileRef = useRef<HTMLInputElement>(null);
+  // [참조] FileUploadField 내부의 <input type="file" /> 요소를 참조하기 위한 Ref 객체 생성
+  const fileRef = useRef<HTMLInputElement>(null); // { current: null } -> { current: HTMLInputElement }
 
   // [이벤트 핸들러]
   // 파일 업로드 (change 이벤트)
@@ -58,15 +58,12 @@ export default function FileUpload() {
     const file = files?.item(0);
     if (!file) return; // 업로드 할 파일이 없다면 함수 종료 (early return)
 
-    console.log(file); // File 미리보기 이미지 URL 생성
-
     // URL.revokeObjectURL (URL 해제, 메모리 정리)
-    if (previewUrl) URL.revokeObjectURL(previewUrl);
+    if (previewUrl) URL.revokeObjectURL(previewUrl); // 메모리 정리
 
     // URL.createObjectURL (URL 생성)
     const createdPreviewUrl = URL.createObjectURL(file);
-
-    // 미리보기 이미지 URL을 previeUrl 상태 값으로 업데이트 (화면 변경)
+    // 미리보기 이미지 URL을 previewUrl 상태 값으로 업데이트 (화면 변경)
     setPreviewUrl(createdPreviewUrl);
   };
 
@@ -77,24 +74,45 @@ export default function FileUpload() {
       URL.revokeObjectURL(previewUrl);
       setPreviewUrl("");
     }
-    // Input 파일의 값을 초기화
+
+    // 인풋 파일의 값 초기화
     const file = fileRef.current;
     if (file) file.value = "";
   };
 
-  // 파일 업로드 요청 (submit)
-  const handleUpload = (e: React.SubmitEvent<HTMLFormElement>) => {
+  // 업로드 상태 선언 (화면 변경 표시)
+  const [isUploading, setIsUploading] = useState(false);
+
+  // 파일 업로드 API 서버에 요청 (submit 이벤트)
+  const handleUploadSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
+    // 브라우저 기본 작동 방지
     e.preventDefault();
 
-    const formElement = e.currentTarget;
-    const formData = new FormData(formElement);
-    console.log(Object.fromEntries(formData));
+    // 업로드할 파일 검사
+    const file = fileRef.current?.files?.[0];
+    if (!file) throw new Error("업로드할 파일을 선택하세요.");
+
+    const formData = new FormData();
+    formData.append("image", file);
+
+    try {
+      setIsUploading(true);
+
+      // 서버에 파일 업로드 요청
+      // 폼 데이터(formData)
+
+      alert("파일 업로드 성공!");
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   return (
     <section className={S.card}>
       <h2 className={S.title}>프로필 설정</h2>
-      <form className={S.form} onSubmit={handleUpload}>
+      <form onSubmit={handleUploadSubmit} className={S.form}>
         <NickNameField />
         <FileUploadField
           ref={fileRef}
