@@ -1,4 +1,4 @@
-import S from '../FileUpload.module.css'
+import S from "../FileUpload.module.css";
 
 export default function NickNameField() {
   return (
@@ -14,5 +14,5 @@ export default function NickNameField() {
         placeholder="사용자 닉네임"
       />
     </div>
-  )
+  );
 }

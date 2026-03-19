@@ -1,8 +1,13 @@
-import NickNameField from './parts/NickNameField'
-import FileUploadField from './parts/FileUploadField'
-import SaveButton from './parts/SaveButton'
-import FileUploadResult from './parts/FileUploadResult'
-import S from './FileUpload.module.css'
+import NickNameField from "./parts/NickNameField";
+import FileUploadField from "./parts/FileUploadField";
+import SaveButton from "./parts/SaveButton";
+// import FileUploadResult from "./parts/FileUploadResult";
+import S from "./FileUpload.module.css";
+import { useRef, useState } from "react";
+
+const { VITE_IMGBB_URL: apiUrl, VITE_IMGBB_API_KEY: apiKey } = import.meta.env;
+const API_ENDPOINT = `${apiUrl}?key=${apiKey}`;
+console.log(API_ENDPOINT);
 
 // --------------------------------------------------------------------------------------
 // 실습 가이드
@@ -40,16 +45,66 @@ import S from './FileUpload.module.css'
 // --------------------------------------------------------------------------------------
 
 export default function FileUpload() {
+  // [상태]
+  const [previewUrl, setPreviewUrl] = useState("");
+
+  // [참조] FileUploadField 내부의 <input type="file"/> 요소를 참조하기 위한 Ref 객체 생성
+  const fileRef = useRef<HTMLInputElement>(null);
+
+  // [이벤트 핸들러]
+  // 파일 업로드 (change 이벤트)
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { files } = e.target;
+    const file = files?.item(0);
+    if (!file) return; // 업로드 할 파일이 없다면 함수 종료 (early return)
+
+    console.log(file); // File 미리보기 이미지 URL 생성
+
+    // URL.revokeObjectURL (URL 해제, 메모리 정리)
+    if (previewUrl) URL.revokeObjectURL(previewUrl);
+
+    // URL.createObjectURL (URL 생성)
+    const createdPreviewUrl = URL.createObjectURL(file);
+
+    // 미리보기 이미지 URL을 previeUrl 상태 값으로 업데이트 (화면 변경)
+    setPreviewUrl(createdPreviewUrl);
+  };
+
+  // 미리보기 이미지 및 파일 삭제 (click 이벤트)
+  const handleDeleteFile = () => {
+    // 미리보기 이미지 초기화
+    if (previewUrl) {
+      URL.revokeObjectURL(previewUrl);
+      setPreviewUrl("");
+    }
+    // Input 파일의 값을 초기화
+    const file = fileRef.current;
+    if (file) file.value = "";
+  };
+
+  // 파일 업로드 요청 (submit)
+  const handleUpload = (e: React.SubmitEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const formElement = e.currentTarget;
+    const formData = new FormData(formElement);
+    console.log(Object.fromEntries(formData));
+  };
 
   return (
     <section className={S.card}>
       <h2 className={S.title}>프로필 설정</h2>
-      <form className={S.form}>
+      <form className={S.form} onSubmit={handleUpload}>
         <NickNameField />
-        <FileUploadField />
+        <FileUploadField
+          ref={fileRef}
+          previewUrl={previewUrl}
+          onFileChange={handleFileChange}
+          onDeleteFile={handleDeleteFile}
+        />
         <SaveButton />
       </form>
-      <FileUploadResult />
+      {/* <FileUploadResult /> */}
     </section>
-  )
+  );
 }
