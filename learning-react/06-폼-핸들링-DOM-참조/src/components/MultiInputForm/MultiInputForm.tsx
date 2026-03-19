@@ -28,12 +28,17 @@ type FormStateKey = keyof FormState;
 export default function MultiInputForm() {
   const sectionId = useId();
   const [formState, setFormState] = useState<FormState>(INITIAL_FORM_STATE);
+  const [formResetKey, setFormResetKey] = useState(0);
 
   const changeFormState = (name: FormStateKey, value: string) => {
-    setFormState({
-      ...formState,
-      [name]: value,
-    });
+    setFormState({ ...formState, [name]: value });
+  };
+
+  const handleReset = () => {
+    console.log("폼 상태 초기화");
+    // 리액트가 제어하는 폼 상태 초기화 하기
+    setFormState(INITIAL_FORM_STATE);
+    setFormResetKey((prev) => prev + 1);
   };
 
   return (
@@ -47,7 +52,7 @@ export default function MultiInputForm() {
         </p>
       </header>
 
-      <form className={S.form}>
+      <form key={formResetKey} className={S.form} onReset={handleReset}>
         <NicknameField
           value={formState.nickname}
           onChange={(value) => changeFormState("nickname", value)}
