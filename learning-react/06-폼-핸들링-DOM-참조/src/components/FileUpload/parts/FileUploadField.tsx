@@ -1,23 +1,17 @@
-import S from "../FileUpload.module.css";
 import { CloseIcon, UploadIcon } from "./SvgIcon";
-
-// ---------------------------------------------------------------------
-// 실습 가이드
-// ---------------------------------------------------------------------
-// 1.
-// ---------------------------------------------------------------------
+import S from "../FileUpload.module.css";
 
 interface Props {
-  ref: React.RefObject<HTMLInputElement | null>;
   previewUrl: string;
-  onFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  ref: React.RefObject<HTMLInputElement | null>;
+  onChangeFile: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onDeleteFile: () => void;
 }
 
 export default function FileUploadField({
   ref,
   previewUrl,
-  onFileChange,
+  onChangeFile: onFileChange,
   onDeleteFile,
 }: Props) {
   return (

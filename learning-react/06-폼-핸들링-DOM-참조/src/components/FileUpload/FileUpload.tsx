@@ -1,18 +1,11 @@
 import { useRef, useState } from "react";
-import type { ResponseData } from "./api/type";
+import { uploadFile } from "./api/upload";
+import type { ImageData } from "./api/type";
 import NickNameField from "./parts/NickNameField";
 import FileUploadField from "./parts/FileUploadField";
 import SaveButton from "./parts/SaveButton";
-// import FileUploadResult from './parts/FileUploadResult'
+import FileUploadResult from "./parts/FileUploadResult";
 import S from "./FileUpload.module.css";
-
-const { VITE_IMGBB_URL, VITE_IMGBB_API_KEY } = import.meta.env;
-
-const getEndpoint = () => {
-  const url = new URL(VITE_IMGBB_URL);
-  url.searchParams.append("key", VITE_IMGBB_API_KEY);
-  return url.toString();
-};
 
 // --------------------------------------------------------------------------------------
 // 실습 가이드
@@ -23,25 +16,25 @@ const getEndpoint = () => {
 // 2. 상태(State) 생성
 //    - `previewUrl`: 선택한 이미지의 미리보기 주소 (string) ✅
 //    - `isUploading`: 업로드 진행 상태 (boolean) ✅
-//    - `uploadedData`: 업로드 완료 후 서버로부터 받은 데이터 (객체 또는 null)
+//    - `uploadedData`: 업로드 완료 후 서버로부터 받은 데이터 (객체 또는 null) ✅
 //    - `isCopied`: 클립보드 복사 완료 여부 (boolean)
 //
-// 3. 파일 변경 핸들링 로직 작성
-//    - 파일 인풋에서 첫 번째 파일 정보를 읽어옵니다.
-//    - 기존에 생성된 `previewUrl`이 있다면 `URL.revokeObjectURL()`로 메모리 해제를 수행합니다.
-//    - 새로운 파일이 있다면 `URL.createObjectURL(file)`로 미리보기 주소를 생성하고 상태를 업데이트합니다.
+// 3. 파일 변경 핸들링 로직 작성 ✅
+//    - 파일 인풋에서 첫 번째 파일 정보를 읽어옵니다. ✅
+//    - 기존에 생성된 `previewUrl`이 있다면 `URL.revokeObjectURL()`로 메모리 해제를 수행합니다. ✅
+//    - 새로운 파일이 있다면 `URL.createObjectURL(file)`로 미리보기 주소를 생성하고 상태를 업데이트합니다. ✅
 //    - 새로운 파일 선택 시 기존 업로드 결과(`uploadedData`) 및 복사(`isCopied`) 상태를 초기화합니다.
 //
-// 4. 미리보기 및 파일 참조 초기화 핸들러 로직 작성
-//    - 파일 참조 객체의 값을 빈 문자열로 설정하여 인풋의 선택 상태를 물리적으로 제거합니다.
-//    - `previewUrl` 상태를 빈 값으로 변경하여 화면에서 미리보기를 지웁니다.
+// 4. 미리보기 및 파일 참조 초기화 핸들러 로직 작성 ✅
+//    - 파일 참조 객체의 값을 빈 문자열로 설정하여 인풋의 선택 상태를 물리적으로 제거합니다. ✅
+//    - `previewUrl` 상태를 빈 값으로 변경하여 화면에서 미리보기를 지웁니다. ✅
 //    - 관련 상태들(`uploadedData`, `isCopied`)을 초기화합니다.
 //
-// 5. 파일 업로드 핸들러 로직 작성
-//    - 폼의 기본 제출 작동을 방지합니다.
-//    - 중복 업로드 방지를 위해 `isUploading` 상태를 체크합니다.
-//    - `fileRef`를 통해 실제 파일 존재 여부와 크기를 검증합니다.
-//    - `FormData` 객체를 생성하고 파일을 첨부하여 지정된 API URL로 `POST` 요청을 보냅니다.
+// 5. 파일 업로드 핸들러 로직 작성 ✅
+//    - 폼의 기본 제출 작동을 방지합니다. ✅
+//    - 중복 업로드 방지를 위해 `isUploading` 상태를 체크합니다. ✅
+//    - `fileRef`를 통해 실제 파일 존재 여부와 크기를 검증합니다. ✅
+//    - `FormData` 객체를 생성하고 파일을 첨부하여 지정된 API URL로 `POST` 요청을 보냅니다. ✅
 //    - 업로드 성공 시 서버 응답 데이터를 `uploadedData`에 저장하고, 인풋과 미리보기를 초기화합니다.
 //
 // 6. 클립보드 복사 핸들러 로직 작성
@@ -55,6 +48,9 @@ export default function FileUpload() {
 
   // 업로드 상태 선언 (화면 변경 표시)
   const [isUploading, setIsUploading] = useState(false);
+
+  // 업로드 된 파일
+  const [uploadedData, setUploadedData] = useState<null | ImageData>(null);
 
   // [참조] FileUploadField 내부의 <input type="file" /> 요소를 참조하기 위한 Ref 객체 생성
   const fileRef = useRef<HTMLInputElement>(null); // { current: null } -> { current: HTMLInputElement }
@@ -75,7 +71,7 @@ export default function FileUpload() {
 
   // [이벤트 핸들러]
   // 파일 업로드 (change 이벤트)
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { files } = e.target;
     const file = files?.item(0);
     if (!file) return; // 업로드 할 파일이 없다면 함수 종료 (early return)
@@ -116,23 +112,18 @@ export default function FileUpload() {
 
       // 서버에 파일 업로드 요청
       // 폼 데이터(formData)
+      const result = await uploadFile(formData);
 
-      const response = await fetch(getEndpoint(), {
-        method: "POST",
-        body: formData,
-      });
+      // 파일 업로드 성공이라면?
+      if (result.success) {
+        // 업로드된 파일 데이터를 uploadedData 상태 업데이트
+        setUploadedData(result.data);
 
-      if (!response.ok) {
-        throw new Error("파일 업로드 실패!");
+        // 업로드 파일 미리보기 및 파일 인풋 초기화
+        resetPreviewAndFile();
+        // 노티피케이션(알림)
+        alert("파일 업로드 성공!");
       }
-
-      const responseData: ResponseData = await response.json();
-      console.log(responseData);
-
-      // 업로드 파일 미리보기 및 파일 인풋 초기화
-      resetPreviewAndFile();
-
-      alert("파일 업로드 성공!");
     } catch (error) {
       console.error(error);
     } finally {
@@ -151,12 +142,12 @@ export default function FileUpload() {
         <FileUploadField
           ref={fileRef}
           previewUrl={previewUrl}
-          onFileChange={handleFileChange}
+          onChangeFile={handleChangeFile}
           onDeleteFile={handleDeleteFile}
         />
         <SaveButton isDisabled={isDisabled} isUploading={isUploading} />
       </form>
-      {/* <FileUploadResult /> */}
+      <FileUploadResult uploadedData={uploadedData} />
     </section>
   );
 }
