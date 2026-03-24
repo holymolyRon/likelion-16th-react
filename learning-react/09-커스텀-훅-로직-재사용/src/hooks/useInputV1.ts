@@ -1,6 +1,11 @@
 import { useCallback, useState } from "react";
 
-export function useInput(initialValue = "") {
+/**
+ * useInputV1 커스텀 훅 v1
+ * @param initialValue 초기값
+ * @returns {Object} 입력 값, 입력 핸들러, 초기화 함수
+ */
+export function useInputV1(initialValue = ""): object {
   const [value, setValue] = useState(initialValue);
 
   const onChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -11,10 +16,5 @@ export function useInput(initialValue = "") {
     setValue(initialValue);
   }, [initialValue]);
 
-  // 어떤 모양으로 내보낼까?
-  // - 배열? [] 순서가 중요한 상태 값 ✅
-  // - 객체? {} 객체의 키가 중요한 상태 값
-
-  // [props, methods]
-  return [{ value, onChange }, { reset }] as const;
+  return { value, onChange, reset };
 }
