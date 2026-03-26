@@ -1,5 +1,5 @@
-import BookDetailSection from "./parts/BookDetailSection"
-import PostDetailSection from "./parts/PostDetailSection"
+import BookDetailSection from "./parts/BookDetailSection";
+import PostDetailSection from "./parts/PostDetailSection";
 
 export default function DataFetchingDRY() {
   return (
@@ -7,5 +7,5 @@ export default function DataFetchingDRY() {
       <PostDetailSection />
       <BookDetailSection />
     </>
-  )
+  );
 }
