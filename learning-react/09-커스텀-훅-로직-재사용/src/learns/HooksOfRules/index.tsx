@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
-import ErrorMessage from "./parts/ErrorMessage";
-import S from "./style.module.css";
+import { useState, useEffect } from 'react'
+import ErrorMessage from './parts/ErrorMessage'
+import S from './style.module.css'
 
 /**
  * "리액트 개발자가 하지 말아야 할 모든 것"이 들어있습니다.
@@ -10,27 +10,27 @@ import S from "./style.module.css";
  */
 
 export default function HooksOfRules() {
-  const [count, setCount] = useState(0);
-  const [isErrorVisible, setIsErrorVisible] = useState(false);
-  const [text, setText] = useState("");
+  const [count, setCount] = useState(0)
+  const [isErrorVisible, setIsErrorVisible] = useState(false)
+  const [text, setText] = useState('')
 
   // 1. 훅 함수 내부에서 조건 처리 ✅
   useEffect(() => {
     if (count > 5) {
-      console.warn("⚠️ 카운트가 5를 초과했습니다!");
+      console.warn('⚠️ 카운트가 5를 초과했습니다!')
     }
-  });
+  })
 
   // 2. 클린업, 종속성 설정 ✅
   useEffect(() => {
     // 타이머 설정
     const intervalId = setInterval(() => {
-      console.log("⏰ 현재 카운트(setInterval):", count);
-    }, 2000);
+      console.log('⏰ 현재 카운트(setInterval):', count)
+    }, 2000)
 
     // 타이머 정리
-    return () => clearInterval(intervalId);
-  }, [count]);
+    return () => clearInterval(intervalId)
+  }, [count])
 
   return (
     <section className={S.container}>
@@ -75,14 +75,14 @@ export default function HooksOfRules() {
         <ErrorMessage isError={isErrorVisible} />
       </div>
     </section>
-  );
+  )
 }
 
 interface ButtonGroupProps {
-  text: string;
-  setText: React.Dispatch<React.SetStateAction<string>>;
-  increaseButton: React.ReactElement;
-  toggleErrorButton: React.ReactElement;
+  text: string
+  setText: React.Dispatch<React.SetStateAction<string>>
+  increaseButton: React.ReactElement
+  toggleErrorButton: React.ReactElement
 }
 
 function ButtonGroup({
@@ -111,5 +111,5 @@ function ButtonGroup({
         {toggleErrorButton}
       </div>
     </div>
-  );
+  )
 }
