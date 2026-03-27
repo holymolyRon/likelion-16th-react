@@ -1,29 +1,29 @@
-import { useContext } from "react";
+import { useContext } from 'react'
 
-import { FamilyContext } from "@/contexts/FamilyContext/context";
-import childIcon from "../icons/child.png";
-import S from "../style.module.css";
+import { FamilyContext } from '@/contexts/FamilyContext/context'
+import childIcon from '../icons/child.png'
+import S from '../style.module.css'
 
 export default function Child() {
   // 4. 컨텍스트를 통해 컨텍스트 값 꺼내쓰기
-  const familyContextValue = useContext(FamilyContext);
+  const familyContextValue = useContext(FamilyContext)
 
   return (
     <section className={`${S.box} ${S.active}`}>
       <h4 className={`${S.familyTitle} ${S.child}`}>
         <img src={childIcon} alt="" width={20} height={20} /> 손자 (
-        {familyContextValue?.name || "이름 없음"})
+        {familyContextValue?.name || '이름 없음'})
       </h4>
 
       <p>(두분 정말 고생 많으시네. 나 때문에...)</p>
 
       <DeepChild />
     </section>
-  );
+  )
 }
 
 function DeepChild() {
-  const familyContextValue = useContext(FamilyContext);
+  const familyContextValue = useContext(FamilyContext)
 
   return (
     <fieldset className={S.form}>
@@ -51,15 +51,15 @@ function DeepChild() {
           onChange={(e) => familyContextValue?.setChecked(e.target.checked)}
         />
         <span>
-          항렬자 사용 ({familyContextValue?.checked ? "동의함" : "미동의"})
+          항렬자 사용 ({familyContextValue?.checked ? '동의함' : '미동의'})
         </span>
       </label>
     </fieldset>
-  );
+  )
 }
 
 function NameInput() {
-  const familyContextValue = useContext(FamilyContext);
+  const familyContextValue = useContext(FamilyContext)
 
   return (
     <div className={S.field}>
@@ -74,5 +74,5 @@ function NameInput() {
         onChange={(e) => familyContextValue?.setName(e.target.value)}
       />
     </div>
-  );
+  )
 }
