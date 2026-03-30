@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 /* 
 
@@ -19,17 +19,20 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 */
 
 // 컨텍스트 프로바이더
-import { MoviesProvider } from './contexts'
+import { MoviesProvider } from "./contexts";
 
 // 공용 레이아웃
-import CommonLayout from './layouts/CommonLayout'
+import CommonLayout from "./layouts/CommonLayout";
 
 // 페이지
-import Home from './pages/Home'
-import Login from './pages/Login'
-import MovieDetail from './pages/MovieDetail'
-import MyPage from './pages/MyPage'
-import NotFound from './pages/NotFound'
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import MovieDetail from "./pages/MovieDetail";
+import MyPage from "./pages/MyPage";
+import NotFound from "./pages/NotFound";
+
+// 페이지 전환 시, 스크롤 위치를 페이지 상단으로 이동
+import ScrollToTop from "./components/ScrollToTop";
 
 export default function App() {
   return (
@@ -50,7 +53,8 @@ export default function App() {
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
+        <ScrollToTop />
       </BrowserRouter>
     </MoviesProvider>
-  )
+  );
 }
