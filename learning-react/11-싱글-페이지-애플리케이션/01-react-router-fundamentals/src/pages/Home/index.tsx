@@ -1,4 +1,4 @@
-import MovieCardList from '../../components/MovieCardList'
+import MovieCardList from '@/components/MovieCardList'
 import S from './style.module.css'
 
 export default function Home() {
