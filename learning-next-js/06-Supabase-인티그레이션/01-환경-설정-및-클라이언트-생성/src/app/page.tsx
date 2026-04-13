@@ -8,7 +8,7 @@ export default function SupabaseSetupPage() {
       <section
         className={cn(
           'grid grid-cols-1 gap-8 md:grid-cols-2',
-          'mx-auto w-full max-w-4xl p-6 md:p-0',
+          'mx-auto w-full max-w-4xl p-6 md:p-0'
         )}
       >
         {/* 
